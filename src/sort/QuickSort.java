@@ -20,7 +20,7 @@ class QuickSort {
             arr[i] = (int) (Math.random() * 8000000);
         }
         Date date1 = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss:SSS");
         System.out.println("排序前的时间:" + simpleDateFormat.format(date1));
         quickSort(arr, 0, arr.length - 1);
         Date date2 = new Date();
