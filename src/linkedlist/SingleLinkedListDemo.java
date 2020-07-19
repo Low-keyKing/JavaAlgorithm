@@ -1,6 +1,6 @@
 package linkedlist;
 
-import java.util.Stack;
+import java.util.*;
 
 public class SingleLinkedListDemo {
     public static void main(String[] args) {
@@ -10,44 +10,53 @@ public class SingleLinkedListDemo {
         HeroNode hero2 = new HeroNode(2, "卢俊义", "玉麒麟");
         HeroNode hero3 = new HeroNode(3, "吴用", "智多星");
         HeroNode hero4 = new HeroNode(4, "林冲", "豹子头");
-        HeroNode hero5 = new HeroNode(5, "小江", "小雨");
-        HeroNode hero6 = new HeroNode(6, "老卢", "老麒麟");
-        HeroNode hero7 = new HeroNode(7, "小吴", "小星星");
+        HeroNode hero5 = new HeroNode(3, "小江", "小雨");
+        HeroNode hero6 = new HeroNode(3, "老卢", "老麒麟");
+        HeroNode hero7 = new HeroNode(4, "小吴", "小星星");
         HeroNode hero8 = new HeroNode(8, "冲哥", "包子头");
         //创建初始链表
         SingleLinkedList singleLinkedList1 = new SingleLinkedList();
         SingleLinkedList singleLinkedList2 = new SingleLinkedList();
         //加入
-//        singleLinkedList1.add(hero1);
-//        singleLinkedList1.add(hero2);
-//        singleLinkedList1.add(hero3);
-//        singleLinkedList1.add(hero4);
-
-        //按照编号加入加入
-        singleLinkedList1.addByOrder(hero3);
-        singleLinkedList1.addByOrder(hero5);
-        singleLinkedList1.addByOrder(hero7);
-        singleLinkedList1.addByOrder(hero4);
-        //显示
-        System.out.println("---链表1---");
+        singleLinkedList1.add(hero1);
+        singleLinkedList1.add(hero2);
+        singleLinkedList1.add(hero3);
+        singleLinkedList1.add(hero5);
+        singleLinkedList1.add(hero6);
+        singleLinkedList1.add(hero7);
+        singleLinkedList1.add(hero4);
         singleLinkedList1.list();
 
-        //按照编号加入加入
-        singleLinkedList2.addByOrder(hero2);
-        singleLinkedList2.addByOrder(hero6);
-        singleLinkedList2.addByOrder(hero1);
-        singleLinkedList2.addByOrder(hero8);
-        //显示
-        System.out.println("---链表2---");
-        singleLinkedList2.list();
+//        //按照编号加入加入
+//        singleLinkedList1.addByOrder(hero3);
+//        singleLinkedList1.addByOrder(hero5);
+//        singleLinkedList1.addByOrder(hero7);
+//        singleLinkedList1.addByOrder(hero4);
+//        //显示
+//        System.out.println("---链表1---");
+//        singleLinkedList1.list();
 
-        //合并两个有序单链表
-        System.out.println("---合并之后的链表---");
-        HeroNode heroNode = combineLists(singleLinkedList1.getHead(), singleLinkedList2.getHead()).next;
-        while (heroNode != null) {
-            System.out.println(heroNode);
-            heroNode = heroNode.next;
-        }
+//        //按照编号加入加入
+//        singleLinkedList2.addByOrder(hero2);
+//        singleLinkedList2.addByOrder(hero6);
+//        singleLinkedList2.addByOrder(hero1);
+//        singleLinkedList2.addByOrder(hero8);
+//        //显示
+//        System.out.println("---链表2---");
+//        singleLinkedList2.list();
+
+        //删除重复节点
+        deleteRepeatNode(singleLinkedList1.getHead());
+        System.out.println("---删除对应节点后的链表---");
+        singleLinkedList1.list();
+
+//        //合并两个有序单链表
+//        System.out.println("---合并之后的链表---");
+//        HeroNode heroNode = combineLists(singleLinkedList1.getHead(), singleLinkedList2.getHead()).next;
+//        while (heroNode != null) {
+//            System.out.println(heroNode);
+//            heroNode = heroNode.next;
+//        }
 
 //        //反向输出链表
 //        System.out.println("---将链表反向输出为(没有改变链表结构)---");
@@ -81,6 +90,35 @@ public class SingleLinkedListDemo {
 
     }
 
+    //在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。
+    // 例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
+    public static void deleteRepeatNode(HeroNode head) {
+        Set<Integer> num = new HashSet<>();
+        HeroNode Stemp = head.next;
+        HeroNode temp = null;
+        while (Stemp != null) {
+            temp = Stemp;
+            while (temp.next != null) {
+                if (Stemp.no == temp.next.no) {
+                    num.add(Stemp.no);
+                }
+                temp = temp.next;
+            }
+            Stemp = Stemp.next;
+        }
+        for (Integer i : num) {
+            temp = head;
+            while (temp.next != null) {
+                if (temp.next.no == i) {
+                    temp.next = temp.next.next;
+                } else {
+                    temp = temp.next;
+                }
+            }
+        }
+    }
+
+
     //有序合并两个有序单链表
     public static HeroNode combineLists(HeroNode head1, HeroNode head2) {
         //创建新链表
@@ -99,27 +137,27 @@ public class SingleLinkedListDemo {
             return null;
         }
         //若链表1的head.next的编号小于链表2的head.next的编号
-        if (head1.next.no < head2.next.no){
+        if (head1.next.no < head2.next.no) {
             singleLinkedList.getHead().next = head1.next;
             //创建辅助变量
             HeroNode temp2 = head2.next;
             //创建暂存变量
             HeroNode next = null;
             //遍历
-            while (temp2 != null){
+            while (temp2 != null) {
                 next = temp2.next;
                 singleLinkedList.addByOrder(temp2);
                 //temp2后移
                 temp2 = next;
             }
-        }else {
+        } else {
             singleLinkedList.getHead().next = head2.next;
             //创建辅助变量
             HeroNode temp1 = head1.next;
             //创建暂存变量
             HeroNode next = null;
             //遍历
-            while (temp1 != null){
+            while (temp1 != null) {
                 next = temp1.next;
                 singleLinkedList.addByOrder(temp1);
                 //temp1后移
